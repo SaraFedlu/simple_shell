@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * exit_bul - Exit Statue Shell
  * @cmd: Parsed Command
@@ -34,10 +35,10 @@ exit(statue);
 }
 }
 /**
- * change_dir - Change Directory
+ * change_dir - Change Dirctory
  * @cmd: Parsed Command
- * @er: State Last Command Executed
- * Return: 0 Success 1 Failed (For Old Pwd Always 0 Case No Old PWD)
+ * @er: Statue Last Command Excuted
+ * Return: 0 Succes 1 Failed (For Old Pwd Always 0 Case No Old PWD)
  */
 int change_dir(char **cmd, __attribute__((unused))int er)
 {
@@ -46,6 +47,7 @@ char cwd[PATH_MAX];
 
 if (cmd[1] == NULL)
 	value = chdir(getenv("HOME"));
+
 else if (_strcmp(cmd[1], "-") == 0)
 {
 value = chdir(getenv("OLDPWD"));
@@ -88,7 +90,7 @@ return (0);
 /**
  * display_help - Displaying Help For Builtin
  * @cmd:Parsed Command
- * @er: Statue Of Last Command Excute.
+ * @er: Statue Of Last Command Excuted
  * Return: 0 Succes -1 Fail
  */
 int display_help(char **cmd, __attribute__((unused))int er)
@@ -97,7 +99,6 @@ int fd, fw, rd = 1;
 char c;
 
 fd = open(cmd[1], O_RDONLY);
-
 if (fd < 0)
 {
 perror("Error");
@@ -107,7 +108,6 @@ while (rd > 0)
 {
 rd = read(fd, &c, 1);
 fw = write(STDOUT_FILENO, &c, rd);
-
 if (fw < 0)
 {
 return (-1);
@@ -136,6 +136,7 @@ else if (_strncmp(cmd[1], "$$", 2) == 0)
 {
 print_number(pid);
 PRINTER("\n");
+
 }
 else if (_strncmp(cmd[1], "$PATH", 5) == 0)
 {

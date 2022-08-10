@@ -14,7 +14,6 @@ size_t len = 0;
 int counter = 0;
 
 fp = fopen(filename, "r");
-
 if (fp == NULL)
 {
 exit(EXIT_FAILURE);

@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * _strcpy - Copie Source To Destination Char
+ * _strcpy - Copy Source To Destination Char
  * @dest:Destination
  * @src:Source
- * Return: Copie Of Char *
+ * Return: Copy Of Char *
  */
 char *_strcpy(char *dest, char *src)
 {
