@@ -1,33 +1,86 @@
 #include "shell.h"
 
 /**
- * parse_cmd - Parse Line Of Input
- * @input:User Input To Parse
- * Return: Array Of Char (Parsed):Simple Shell
+ * long_to_string - converts a number to a string.
+ * @number: number to be converten in an string.
+ * @string: buffer to save the number as string.
+ * @base: base to convert number
+ *
+ * Return: Nothing.
  */
-char **parse_cmd(char *input)
+void long_to_string(long number, char *string, int base)
 {
-char **tokens;
-char *token;
-int i, buffsize = BUFSIZE;
+	int index = 0, inNegative = 0;
+	long cociente = number;
+	char letters[] = {"0123456789abcdef"};
 
-if (input == NULL)
-	return (NULL);
+	if (cociente == 0)
+		string[index++] = '0';
 
-tokens = malloc(sizeof(char *) * buffsize);
-if (!tokens)
-{
-perror("hsh");
-return (NULL);
+	if (string[0] == '-')
+		inNegative = 1;
+
+	while (cociente)
+	{
+		if (cociente < 0)
+			string[index++] = letters[-(cociente % base)];
+		else
+			string[index++] = letters[cociente % base];
+		cociente /= base;
+	}
+	if (inNegative)
+		string[index++] = '-';
+
+	string[index] = '\0';
+	str_reverse(string);
 }
-token = _strtok(input, "\n ");
 
-for (i = 0; token; i++)
+
+/**
+ * _atoi - convert a string to an integer.
+ *
+ * @s: pointer to str origen.
+ * Return: int of string or 0.
+ */
+int _atoi(char *s)
 {
-tokens[i] = token;
-token = _strtok(NULL, "\n ");
-}
-tokens[i] = NULL;
+	int sign = 1;
+	unsigned int number = 0;
+	/*1- analisys sign*/
+	while (!('0' <= *s && *s <= '9') && *s != '\0')
+	{
+		if (*s == '-')
+			sign *= -1;
+		if (*s == '+')
+			sign *= +1;
+		s++;
+	}
 
-return (tokens);
+	/*2 - extract the number */
+	while ('0' <= *s && *s <= '9' && *s != '\0')
+	{
+
+		number = (number * 10) + (*s - '0');
+		s++;
+	}
+	return (number * sign);
+}
+
+/**
+ * count_characters - count the coincidences of character in string.
+ *
+ * @string: pointer to str origen.
+ * @character: string with  chars to be counted
+ * Return: int of string or 0.
+ */
+int count_characters(char *string, char *character)
+{
+	int i = 0, counter = 0;
+
+	for (; string[i]; i++)
+	{
+		if (string[i] == character[0])
+			counter++;
+	}
+	return (counter);
 }
