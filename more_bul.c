@@ -1,69 +1,35 @@
 #include "shell.h"
 
 /**
- * history_dis - Display History Of User Input Simple Shell
- * @c:Parsed Command
- * @s:Statue Of Last Excute
- * Return: 0 Succes -1 Fail
- */
-int history_dis(__attribute__((unused))char **c, __attribute__((unused))int s)
+ * builtins_list - search for match and execute the associate builtin
+ * @data: struct for the program's data
+ * Return: Returns the return of the function executed is there is a match,
+ * otherwise returns -1.
+ **/
+int builtins_list(data_of_program *data)
 {
-char *filename = ".simple_shell_history";
-FILE *fp;
-char *line = NULL;
-size_t len = 0;
-int counter = 0;
-char *er;
+	int iterator;
+	builtins options[] = {
+		{"exit", builtin_exit},
+		{"help", builtin_help},
+		{"cd", builtin_cd},
+		{"alias", builtin_alias},
+		{"env", builtin_env},
+		{"setenv", builtin_set_env},
+		{"unsetenv", builtin_unset_env},
+		{NULL, NULL}
+	};
 
-fp = fopen(filename, "r");
-if (fp == NULL)
-{
-return (-1);
-}
-while ((getline(&line, &len, fp)) != -1)
-{
-counter++;
-er = _itoa(counter);
-PRINTER(er);
-free(er);
-PRINTER(" ");
-PRINTER(line);
-}
-if (line)
-	free(line);
-
-fclose(fp);
-return (0);
-}
-/**
- * print_echo - Excute Normal Echo
- * @cmd: Parsed Command
- * Return: 0 Success -1 Fail
- */
-int print_echo(char **cmd)
-{
-pid_t pid;
-int status;
-
-pid = fork();
-
-if (pid == 0)
-{
-if (execve("/bin/echo", cmd, environ) == -1)
-{
-return (-1);
-}
-exit(EXIT_FAILURE);
-}
-else if (pid < 0)
-{
-return (-1);
-}
-else
-{
-do {
-waitpid(pid, &status, WUNTRACED);
-} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-}
-return (1);
+/*walk through the structure*/
+	for (iterator = 0; options[iterator].builtin != NULL; iterator++)
+	{
+/*if there is a match between the given command and a builtin,*/
+		if (str_compare(options[iterator].builtin, data->command_name, 0))
+		{
+/*execute the function, and return the return value of the function*/
+			return (options[iterator].function(data));
+		}
+/*if there is no match return -1 */
+	}
+	return (-1);
 }
