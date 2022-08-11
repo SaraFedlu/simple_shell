@@ -15,7 +15,7 @@
 
 /************* MACROS **************/
 
-#include "macros.h" /* for msg help and prompt */
+#include "helpers.h" /* for msg help and prompt */
 
 /************* STRUCTURES **************/
 
